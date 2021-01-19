@@ -22,8 +22,8 @@
        
          <div class="row">
         <div class="col-12">
-          <a href="javascript:void(0)" class="btn btn-info mb-2" id="create-new-lead">Add Lead</a>
-
+          <a href="{{ route=('registration') }}" class="btn btn-info mb-2" id="create-new-lead">Add Lead</a>
+          
             <table class="table table-bordered datatable" id="laravel_datatable">
                <thead>
                   <tr>
@@ -44,21 +44,22 @@
 </div>
 
         
-<div class="modal fade" id="ajax-crud-modal" aria-hidden="true">
+<!-- <div class="modal fade" id="ajax-crud-modal" aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">
     <div class="modal-header">
         <h4 class="modal-title" id="leadCrudModal"></h4>
-    </div>
-    <div class="modal-body">
-    <form id="leadForm" name="leadForm">
+    </div> -->
+    <!-- <div class="modal-body" id="ajax-crud-modal">
+    
+   <form id="leadForm" name="leadForm">
     <input type="hidden" name="lead_id" id="lead_id">
 
         <div class="form-group">
             <label class="col">Title</label>
               <input type="text" class="form-control" id="title" name="title" value="" required="">
         </div>
-   <div class="form-row">
+       <div class="form-row">
      <div class="form-group col">
        <label for="leadSource">Lead Source</label>
        <select id="leadSource" name="leadSource" class="form-control">
@@ -146,8 +147,7 @@
        </div>
        <div class="form-group col-md-6">
          <label for="state">State</label>
-         <input type="text" id="State" name="state" class="form-control">
-         
+         <input type="text" id="State" name="state" class="form-control">  
        </div>
        
      </div>
@@ -155,21 +155,20 @@
           
   </form>
     </div>
-    <div class="modal-footer">
-        
-    </div>
+    <div class="modal-footer">    
+    </div> -->
+<!-- </div>
 </div>
-</div>
-</div>   
+</div>    -->
 
 @endsection
 @push('script')
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script> 
+
   <script type="text/javascript">
   $(function () {
      
@@ -199,7 +198,7 @@
         $('#create-new-lead').click(function () {
         $('#btn-save').val("create-lead");
         $('#leadForm').trigger("reset");
-        $('#leadCrudModal').html("Add New lead");
+        $('#leadCrudModal').html("Add New lead") ;
         $('#ajax-crud-modal').modal('show');
     });
 
@@ -284,7 +283,7 @@
               $('#btn-save').html('Save up err');
           }
         });
-    }
+       }
       }
      })
     }

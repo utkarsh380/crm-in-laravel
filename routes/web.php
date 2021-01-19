@@ -18,6 +18,10 @@ Route::get('/', function () {
  return view('admin.dashboard');
 });
 
+Route::get('registration', function(){
+  return view('lead.registration');
+});
+
 Auth::routes();
 
 Route::resource('users', 'UserController');
