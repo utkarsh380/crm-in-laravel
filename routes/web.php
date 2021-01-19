@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+   // return view('welcome');
+ return view('admin.dashboard');
 });
 
 Auth::routes();
@@ -24,3 +25,15 @@ Route::resource('users', 'UserController');
 Route::resource('roles', 'RoleController');
 
 Route::resource('permissions', 'PermissionController');
+
+
+
+Route::get('leads', function(){
+    return view('index');
+  });
+  
+  // Route::get('leads/list', 'leadcrud\LeadController@index')->name('leads.list');
+
+Route::post('leads/add','leadcrud\LeadController@add')->name('leads.add');
+
+Route::resource('leads', 'leadcrud\LeadController');
