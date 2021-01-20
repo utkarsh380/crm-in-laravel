@@ -25,11 +25,28 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // if ($request->ajax()) {
+
+        //     $data = User::latest()->get();
+        //     return Datatables::of($data)
+        //             ->addIndexColumn()
+        //             ->addColumn('action', function($row){
+              
+        //             $btn = '<td><a href="javascript:void(0)" id="edit-lead" data-id="' .$row->id. '" class="btn btn-info edit-lead"><i class="far fa-edit"></i></a></td>';
+
+        //             $btn = $btn.'<td><a href="javascript:void(0)" id="delete-lead" data-id="' .$row->id. '" class="btn btn-danger delete-lead"><i class="fas fa-trash-alt"></i></a></td></tr>';
+
+        //             return $btn;
+        //             })
+        //      ->rawColumns(['action'])
+        //     ->make(true);
+        // }
+        // return view('users.index');
+      
         $users = User::all(); 
-        return view('users.index')->with('users', $users);
+         return view('users.index')->with('users', $users);
   
     }
 

@@ -8,6 +8,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
+  <link href="{{asset('https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css')}}" rel="stylesheet">
   <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
   
   <!-- Ionicons -->
@@ -181,6 +182,9 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('dist/js/demo.js')}}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
+
+<script src="{{asset('https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js')}}"></script> 
 
 @stack('script')
 </body>

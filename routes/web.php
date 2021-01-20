@@ -13,10 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/dash', function () {
    // return view('welcome');
  return view('admin.dashboard');
 });
+
+Route::get('/', function () {
+  // return view('welcome');
+return view('welcome');
+});
+Route::get('/home','HomeController@index')->name('home');
 
 Route::get('registration', function(){
   return view('lead.registration');

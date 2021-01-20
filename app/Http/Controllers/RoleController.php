@@ -14,7 +14,7 @@ use Session;
 class RoleController extends Controller
 {
     public function __construct() {
-        $this->middleware(['auth', 'isAdmin']);//isAdmin middleware lets only users with a //specific permission permission to access these resources
+        $this->middleware(['auth']);//isAdmin middleware lets only users with a //specific permission permission to access these resources
     }
 
     /**
@@ -22,12 +22,31 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        // if ($request->ajax()) {
+
+        //     $data = Role::latest()->get();
+        //     return Datatables::of($data)
+        //             ->addIndexColumn()
+        //             ->addColumn('action', function($row){
+              
+        //             $btn = '<td><a href="javascript:void(0)" id="edit-lead" data-id="' .$row->id. '" class="btn btn-info edit-lead"><i class="far fa-edit"></i></a></td>';
+
+        //             $btn = $btn.'<td><a href="javascript:void(0)" id="delete-lead" data-id="' .$row->id. '" class="btn btn-danger delete-lead"><i class="fas fa-trash-alt"></i></a></td></tr>';
+
+        //             return $btn;
+        //             })
+        //      ->rawColumns(['action'])
+        //     ->make(true);
+        // }
+      
+      
         
         $roles = Role::all();//Get all roles
 
         return view('roles.index')->with('roles', $roles);
+    
 
     }
 

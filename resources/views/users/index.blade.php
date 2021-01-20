@@ -9,7 +9,7 @@
     <a href="{{ route('permissions.index') }}" class="btn btn-default pull-right">Permissions</a></h1>
     <hr>
     <div class="table-responsive">
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped data-table">
 
             <thead>
                 <tr>
@@ -49,3 +49,13 @@
 </div>
 
 @endsection
+
+
+@push('script')
+
+<script type="text/javascript">
+  $(function () { 
+    var table = $('.data-table').DataTable(); 
+  });
+</script>
+@endpush
