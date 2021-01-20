@@ -40,7 +40,7 @@ class RoleController extends Controller
     {
         $permissions = Permission::all();//Get all permissions
 
-        return view('roles.create', ['permissions'=>$permissions]);
+        return view('roles.create')->with('permissions',$permissions);
   
     }
 

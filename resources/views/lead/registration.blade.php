@@ -3,20 +3,25 @@
 @push('meta')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @endpush
-@push('style')
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
-    <style>
-    .reg-form {
-
-    }
-    
-    </style>
-@endpush
-
 @section('content')
 
-<div class="reg-form">
+<div>
+      <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Leads</li>
+  </ol>
+</nav> 
+   </div>
+
+
+    <ol class="breadcrumb p-3 border bg-light">
+
+       <li> <a href="{{url('registration')}}" class="btn btn-info mb-2" id="create-new-lead">Add Lead</a></li>
+    <li><a href="{{url('leads')}}" class="btn btn-secondary mb-2" id="create-new-lead">All Leads</a></li>
     
+    </ol>
+    <div id="ajax-crud-modal" class="container">
     <form id="leadForm" name="leadForm">
      <input type="hidden" name="lead_id" id="lead_id">
  
@@ -25,20 +30,24 @@
                <input type="text" class="form-control" id="title" name="title" value="" required="">
          </div>
         <div class="form-row">
-      <div class="form-group col">
+      <div class="form-group col-sm-2">
         <label for="leadSource">Lead Source</label>
         <select id="leadSource" name="leadSource" class="form-control">
             <option selected>New</option>
             <option>...</option>
           </select>
       </div>
-      <div class="form-group col">
+      <div class="col-sm-2">
+     
+     </div>
+      <div class="form-group col-sm-2">
         <label for="leadStatus">Lead Status</label>
         <select id="leadStatus" name="leadStatus" class="form-control">
             <option selected>Others</option>
             <option>...</option>
           </select>
       </div>
+     
     </div>
  
     <div class="form-row">
@@ -120,10 +129,128 @@
            
    </form>
    </div>
+   </div>
 
    @endsection
-@push('script')
-   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" ></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"></script>
+   @push('script')
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script> 
+
+  <script type="text/javascript">
+  $(function () {
+     
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+    });
+    
+    var table =  $('#laravel_datatable').DataTable({
+           processing: true,
+           serverSide: true,
+           ajax: "",
+           columns: [    
+                    { data: 'clientName', name: 'clientName' },
+                    { data: 'clientEmail', name: 'clientEmail' },
+                    { data: 'leadType', name: 'leadType' },            
+                    { data: 'generatedBy', name: 'generatedBy' },                  
+                    { data: 'country', name: 'country' },
+                    { data: 'salesPerson', name: 'salesPerson' },
+                    { data: 'description', name: 'description' }, 
+                    { data: 'leadStatus', name: 'leadStatus' },
+                    {data: 'action', name: 'action', orderable: false, searchable: false},            
+                 ],order: [[0, 'desc']]
+        });
+
+        $('#create-new-lead').click(function () {
+        $('#btn-save').val("create-lead");
+        $('#leadForm').trigger("reset");
+
+    });
+
+    $('body').on('click', '.edit-lead', function () {
+      var lead_id = $(this).data('id');
+      $.get('leads/'+lead_id+'/edit', function (data) {
+          $('#btn-save').val("edit-lead");
+          $('#lead_id').val(data.id);
+          $('#title').val(data.title);
+          $('#clientName').val(data.clientName);
+          $('#clientEmail').val(data.clientEmail); 
+          $('#leadType').val(data.description); 
+          $('#generatedBy').val(data.generatedBy); 
+          $('#country').val(data.country); 
+          $('#salesPerson').val(data.salesPerson); 
+          $('#description').val(data.description); 
+          $('#leadStatus').val(data.leadStatus); 
+      })
+   });
+
+    $('body').on('click', '.delete-lead', function () {
+        var lead_id = $(this).data("id");
+        confirm("Are You sure want to delete !");
+ 
+        $.ajax({
+            type: "DELETE",
+            url: "leads"+'/'+lead_id,
+            success: function (data) {
+                table.draw();
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    }); 
+
+  
+
+});
+    if ($("#leadForm").length > 0) {
+      $("#leadForm").validate({
+     
+     submitHandler: function(form) {
+        var actionType = $('#btn-save').val();
+      $('#btn-save').html('Sending..');
+      if(actionType == 'create-lead') {
+      $.ajax({
+          data: $('#leadForm').serialize(),
+          url: "{{ route('leads.add') }}",
+          type: "POST",
+          dataType: 'json',
+          success: function (data) {
+            
+              $('#leadForm').trigger("reset");
+              $('#ajax-crud-modal').modal('hide');
+              $('#btn-save').html('Save');
+              $('.datatable').DataTable().ajax.reload();
+          },
+          error: function (data) {
+              console.log('Error:', data);
+              $('#btn-save').html('Save Changes err');
+          }
+        });
+    } 
+    else 
+    {
+        $.ajax({
+          data: $('#leadForm').serialize(),
+          url: "{{ route('leads.store') }}",
+          type: "POST",
+          dataType: 'json',
+          success: function (data) {   
+              $('#leadForm').trigger("reset");
+              $('#btn-save').html('Save');
+              $('.datatable').DataTable().ajax.reload();
+          },
+          error: function (data) {
+              console.log('Error:', data);
+              $('#btn-save').html('Save up err');
+          }
+        });
+       }
+      }
+     })
+    }
+  </script>
 @endpush 

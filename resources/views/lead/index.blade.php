@@ -4,9 +4,9 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @endpush
 @push('style')
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
 @endpush
 
       @section('content')
@@ -18,14 +18,20 @@
   </ol>
 </nav> 
    </div>
+
+   <ol class="breadcrumb bg-light">
+
+       <li> <a href="{{url('registration')}}" class="btn btn-info mb-2" id="create-new-lead">Add Lead</a></li>
+    <li><a href="{{url('leads')}}" class="btn btn-secondary mb-2" id="create-new-lead">All Leads</a></li>
+    
+    </ol>
          <div class="container">
        
          <div class="row">
-        <div class="col-12">
-          <a href="{{ route=('registration') }}" class="btn btn-info mb-2" id="create-new-lead">Add Lead</a>
-          
+  
+        <div class="col-12">  
             <table class="table table-bordered datatable" id="laravel_datatable">
-               <thead>
+               <thead class="bg-light">
                   <tr>
                      <th>Client Name</th>
                      <th>Client Email</th>
@@ -163,9 +169,9 @@
 
 @endsection
 @push('script')
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" ></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>   -->
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script> 
 
@@ -198,16 +204,13 @@
         $('#create-new-lead').click(function () {
         $('#btn-save').val("create-lead");
         $('#leadForm').trigger("reset");
-        $('#leadCrudModal').html("Add New lead") ;
-        $('#ajax-crud-modal').modal('show');
+
     });
 
     $('body').on('click', '.edit-lead', function () {
       var lead_id = $(this).data('id');
       $.get('leads/'+lead_id+'/edit', function (data) {
-         $('#leadCrudModal').html("Edit lead");
           $('#btn-save').val("edit-lead");
-          $('#ajax-crud-modal').modal('show');
           $('#lead_id').val(data.id);
           $('#title').val(data.title);
           $('#clientName').val(data.clientName);
@@ -255,7 +258,7 @@
           success: function (data) {
             
               $('#leadForm').trigger("reset");
-              $('#ajax-crud-modal').modal('hide');
+        
               $('#btn-save').html('Save');
               $('.datatable').DataTable().ajax.reload();
           },
@@ -274,7 +277,7 @@
           dataType: 'json',
           success: function (data) {   
               $('#leadForm').trigger("reset");
-              $('#ajax-crud-modal').modal('hide');
+        
               $('#btn-save').html('Save');
               $('.datatable').DataTable().ajax.reload();
           },
