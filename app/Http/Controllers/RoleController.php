@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Auth;
+use App\Models\DemoRole;
+use App\Models\DemoPermission;
 //Importing laravel-permission models
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -24,28 +26,11 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        // if ($request->ajax()) {
-
-        //     $data = Role::latest()->get();
-        //     return Datatables::of($data)
-        //             ->addIndexColumn()
-        //             ->addColumn('action', function($row){
-              
-        //             $btn = '<td><a href="javascript:void(0)" id="edit-lead" data-id="' .$row->id. '" class="btn btn-info edit-lead"><i class="far fa-edit"></i></a></td>';
-
-        //             $btn = $btn.'<td><a href="javascript:void(0)" id="delete-lead" data-id="' .$row->id. '" class="btn btn-danger delete-lead"><i class="fas fa-trash-alt"></i></a></td></tr>';
-
-        //             return $btn;
-        //             })
-        //      ->rawColumns(['action'])
-        //     ->make(true);
-        // }
-      
-      
         
         $roles = Role::all();//Get all roles
-
-        return view('roles.index')->with('roles', $roles);
+        // dd($roles);
+        $permissions = Permission::all();
+        return view('roles.index')->with('roles', $roles)->with('permissions',$permissions);
     
 
     }

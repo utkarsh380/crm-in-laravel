@@ -26,7 +26,14 @@
 
                     <td>{{ $role->name }}</td>
 
-                    <td>{{ str_replace(array('[',']','"'),'', $role->permissions()->pluck('name')) }}</td>{{-- Retrieve array of permissions associated to a role and convert to string --}}
+                    <!-- <td>{{ str_replace(array('[',']','"'),'', $role->permissions()->pluck('name')) }}</td>{{-- Retrieve array of permissions associated to a role and convert to string --}} -->
+                    <td> <div class='form-group'>
+          @foreach ($permissions as $permission)
+            {{ Form::checkbox('permissions[]',  $permission->id ) }}
+            {{ Form::label($permission->name, ucfirst($permission->name)) }}
+
+          @endforeach
+             </div></td>
                     <td>
                     <a href="{{ URL::to('roles/'.$role->id.'/edit') }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
 
@@ -35,6 +42,7 @@
                     {!! Form::close() !!}
 
                     </td>
+                  
                 </tr>
                 @endforeach
             </tbody>

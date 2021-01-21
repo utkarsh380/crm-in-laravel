@@ -6,7 +6,7 @@
 
 <div class='col-lg-4 col-lg-offset-4'>
 
-    <h1><i class='fa fa-key'></i> Add Role</h1>
+    <h3><i class='fa fa-key'></i> Add Role</h3>
     <hr>
 
     {{ Form::open(array('url' => 'roles')) }}
