@@ -243,8 +243,6 @@
   })
 }
    
-  
 </script>
-
 @endpush
 

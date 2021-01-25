@@ -25,7 +25,7 @@ class PermissionController extends Controller
     public function index()
     {
         $permissions = Permission::all(); //Get all permissions
-
+        //dd($permissions);
         return view('permissions.index')->with('permissions', $permissions);
 
     }

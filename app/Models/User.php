@@ -48,10 +48,10 @@ class User extends Authenticatable
         $this->attributes['password'] = bcrypt($password);
     }
 
+    public function userRole()
+    {
+        return $this->hasOne(Role::class, 'user_id', 'id');
+    }
 
-
-    public function role()  
-{  
-   return $this->belongsToMany('App\Role','roles_user');  
-}  
+ 
 }

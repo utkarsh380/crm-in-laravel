@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Auth;
-use App\Models\DemoRole;
-use App\Models\DemoPermission;
+
 //Importing laravel-permission models
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+use App\Models\Role;
+use App\Models\Permission;
 
 use Session;
 
@@ -26,13 +25,19 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        
-        $roles = Role::all();//Get all roles
-        // dd($roles);
-        $permissions = Permission::all();
-        return view('roles.index')->with('roles', $roles)->with('permissions',$permissions);
     
+        $roles = Role::all();//Get all roles
 
+    // foreach($roles as $role)
+    // {
+    //     foreach($role->permissions as $permission)
+    //     {
+    //         print_r($permission->name);
+    //     }
+    // }
+      //  dd($roles);
+        
+        return view('roles.index')->with('roles', $roles);
     }
 
     /**
@@ -56,6 +61,8 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+
+      //  dd($request);
         //
         $this->validate($request, [
             'name'=>'required|unique:roles|max:10',
@@ -75,7 +82,8 @@ class RoleController extends Controller
             $p = Permission::where('id', '=', $permission)->firstOrFail(); 
          //Fetch the newly created role and assign permission
             $role = Role::where('name', '=', $name)->first(); 
-            $role->givePermissionTo($p);
+            $role->permissions()->attach($p);
+            $role->save();
         }
 
         return redirect()->route('roles.index')
@@ -118,34 +126,19 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$_id)
     {
-        //
-        $role = Role::findOrFail($id);//Get role with the given id
-        //Validate name and permission fields
-            $this->validate($request, [
-                'name'=>'required|max:10|unique:roles,name,'.$id,
-                'permissions' =>'required',
-            ]);
-    
-            $input = $request->except(['permissions']);
-            $permissions = $request['permissions'];
-            $role->fill($input)->save();
-    
-            $p_all = Permission::all();//Get all permissions
-    
-            foreach ($p_all as $p) {
-                $role->revokePermissionTo($p); //Remove all permissions associated with role
-            }
-    
-            foreach ($permissions as $permission) {
-                $p = Permission::where('id', '=', $permission)->firstOrFail(); //Get corresponding form //permission in db
-                $role->givePermissionTo($p);  //Assign permission to role
-            }
-    
-            return redirect()->route('roles.index')
-                ->with('flash_message',
-                 'Role'. $role->name.' updated!');
+       // dd($request);
+
+        $allowed_permissions = [];
+        $name=$request->name;
+        $role = Role::where('name', '=', $name)->first();
+        $role->permissions()->sync($request->input('permissions'));
+        $role->save();
+       
+        return redirect()->route('roles.index')
+        ->with('flash_message',
+         'Role'. $role->name.' updated!');      
     
     }
 

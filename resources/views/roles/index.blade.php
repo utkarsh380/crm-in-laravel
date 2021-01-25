@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('title', '| Roles')
 
@@ -11,7 +11,7 @@
     <a href="{{ route('permissions.index') }}" class="btn btn-default pull-right">Permissions</a></h1>
     <hr>
     <div class="table-responsive">
-        <table class="table table-bordered table-striped  data-table">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Role</th>
@@ -23,17 +23,11 @@
             <tbody>
                 @foreach ($roles as $role)
                 <tr>
-
                     <td>{{ $role->name }}</td>
-
-                    <!-- <td>{{ str_replace(array('[',']','"'),'', $role->permissions()->pluck('name')) }}</td>{{-- Retrieve array of permissions associated to a role and convert to string --}} -->
-                    <td> <div class='form-group'>
-          @foreach ($permissions as $permission)
-            {{ Form::checkbox('permissions[]',  $permission->id ) }}
-            {{ Form::label($permission->name, ucfirst($permission->name)) }}
-
-          @endforeach
-             </div></td>
+                    <td> @foreach($role->permissions as $permission)
+                    {{$permission->name.' /'}} 
+                     @endforeach
+                    </td>
                     <td>
                     <a href="{{ URL::to('roles/'.$role->id.'/edit') }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
 
@@ -42,7 +36,6 @@
                     {!! Form::close() !!}
 
                     </td>
-                  
                 </tr>
                 @endforeach
             </tbody>
@@ -55,12 +48,3 @@
 </div>
 
 @endsection
-
-@push('script')
-
-<script type="text/javascript">
-  $(function () { 
-    var table = $('.data-table').DataTable(); 
-  });
-</script>
-@endpush

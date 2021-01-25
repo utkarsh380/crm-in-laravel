@@ -3,11 +3,23 @@
 @section('title', '| Edit User')
 
 @section('content')
+<div>
+      <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#"><i class='fa fa-user-plus'></i> Edit {{$user->name}}</a></li>
+ 
+  </ol>
+</nav> 
+   </div>
 
+<ol class="breadcrumb p-3 border bg-light">
+
+<li> <a href="{{url('users/create/')}}" class="btn btn-info mb-2" id="create-new-lead">Add User</a></li>
+<li><a href="{{url('users')}}" class="btn btn-secondary mb-2" id="create-new-lead">All Users</a></li>
+
+</ol>
 <div class='col-lg-4 col-lg-offset-4'>
 
-    <h1><i class='fa fa-user-plus'></i> Edit {{$user->name}}</h1>
-    <hr>
 
     {{ Form::model($user, array('route' => array('users.update', $user->id), 'method' => 'PUT')) }}{{-- Form model binding to automatically populate our fields with user data --}}
 
@@ -23,14 +35,7 @@
 
     <h5><b>Give Role</b></h5>
 
-    <div class='form-group'>
-        @foreach ($roles as $role)
-            {{ Form::checkbox('roles[]',  $role->id, $user->roles ) }}
-            {{ Form::label($role->name, ucfirst($role->name)) }}<br>
-
-        @endforeach
-    </div>
-
+ 
     <div class="form-group">
         {{ Form::label('password', 'Password') }}<br>
         {{ Form::password('password', array('class' => 'form-control')) }}
